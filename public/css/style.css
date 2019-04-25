@@ -1,0 +1,35 @@
+html {
+    min-height: 100%;
+}
+
+body {
+    background-color: black;
+}
+
+#navbarColor01 {
+    background-color: black;
+}
+
+.navbar-collapse {
+    color: rgb(0, 204, 17);
+}
+
+.navbar-toggler {
+    background-color: rgb(217, 223, 215);
+}
+
+.nav-link {
+    background-color: rgb(217, 223, 215);
+}
+
+.scrape-new {
+    background-color: rgb(217, 223, 215); 
+}
+
+.clear {
+    background-color: rgb(217, 223, 215);
+}
+
+.navebar-brand {
+    color: rgb(56, 240, 0);
+}
