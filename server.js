@@ -10,7 +10,7 @@ var cheerio = require("cheerio");
 var db = require("./models");
 
 // PORT 3000 //
-var PORT = process.env.PORT || 3000;
+var PORT = process.env.PORT || 8080;
 
 // MongoDB connection //
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
@@ -27,6 +27,8 @@ app.use(express.urlencoded ({
     extended: false 
 }));
 
+app.use(express.json());
+
 // Public directory //
 app.use(express.static(process.cwd() + "/public"));
 
@@ -36,16 +38,14 @@ app.engine("handlebars", exphbs ({
 }));
 app.set("view engine", "handlebars");
 
-// Mongoose connection //
-db.on("error", function(error) {
-  console.log("Error with Mongoose: ", error);
-});
-
-db.once("open", function() {
-  console.log("successful connection to Mongoose!");
-});
-
 // Routes //
+
+// Clears All Routes //
+app.get("/delete-all", function(req, res) {
+  db.Article.deleteMany({saved: false})
+  .then(function(Article) {
+  });
+});
 
 // Route for getting all Articles from the db //
 app.get("/", function(req, res) {
@@ -83,7 +83,7 @@ app.get("/scrape", function(req, res) {
         //   .children("img")
         //   .attr("src");
         result.summary = $(this)
-          .find("p.media-deck")
+          .find("p.media-deck") 
           .text();
              
 // Create a new Article from scraping //
@@ -91,10 +91,9 @@ app.get("/scrape", function(req, res) {
             if (err) {
             console.log(err);
             } else { 
-              console.log(inserted) 
-          }});   
+              console.log(inserted);
+          }});    
       });
-      res.send("Scrape complete")      
     });
   });
 
@@ -104,17 +103,19 @@ app.get("/saved", function(req, res) {
       saved: false
     })
     .then(function(dbArticle) {
-        var object = {
+        var hbsobject = {
             articles: dbArticle
         };
-        res.render("saved", object);
+        res.render(dbArticle);
+        res.render("saved", hbsobject);
+
     })
     .catch(function(err) {
       res.json(err);
     });
 });
 
-// Route to save an article  //
+// Route to save an article  **// 
 app.put("/saved/:id", function(req, res) {
   db.Article.findByIdAndUpdate({ _id: req.params.id }, 
     { saved : true })
@@ -126,7 +127,7 @@ app.put("/saved/:id", function(req, res) {
     });
 });
 
-//  Route to clear/unsave an article  //
+//  Route to clear/unsave an article  **//
 app.put("/unsave/:id", function(req, res) {
   db.Article.findByIdAndUpdate({ _id: req.params.id }, 
     { saved : false })

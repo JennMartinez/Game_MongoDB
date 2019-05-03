@@ -1,5 +1,27 @@
 $(document).ready(function() {
 
+// Clear articles //
+$(".clear").on("click", function() {
+  console.log("clear articles button")
+  $.ajax({
+    method: "GET",
+    url: "/delete-all"
+  });
+  setTimeout(reloadPage, 250)
+})
+
+// Reloads page //
+function reloadPage() {
+  location.reload()
+}
+
+// function clearArt() {
+//   $.ajax({
+//     method: "GET",
+//     url: "/delete-all"
+//   });
+// }
+
 // Scrapes articles //
 $(".scrape-new").on("click", function() {
   console.log("scraper button clicks")
@@ -9,20 +31,23 @@ $(".scrape-new").on("click", function() {
   }).done(function(data) {
     console.log(data)
   })
+  setTimeout(reloadPage, 1000)
+  // setTimeout(clearArt, 1001)
+  console.log("clear all")
 });
 
-// Save articles btn 
-// url path
+// Save articles btn //
 $(".save-articles").on("click", function() {
+  console.log("saved articles button clicks")
   var thisId = $(this).attr("data-id");
   $.ajax({
     method: "POST",
-    url: "/saved" + thisId,
+    url: "/saved",
   }).done(function(data) {
   });
 });
 
-// Open saved articles btn //
+// Open saved articles btn ---> Directs to Saved Articles Page //
 $(".open").on("click", function() {
   $.get("/saved", function (req, res) {
     console.log(res);
@@ -30,16 +55,16 @@ $(".open").on("click", function() {
   });
 });
 
-// Delete articles btn 
+// Delete articles btn //
 // url path
-$(".delete-article").on("click", function() {
-  var thisId = $(this).attr("data-id");
-  $.ajax({
-    method: "POST",
-    url: "/unsave/" + thisId,
-  }).done(function(data) {
-  });
-});
+// $(".delete-article").on("click", function() {
+//   var thisId = $(this).attr("data-id");
+//   $.ajax({
+//     method: "POST",
+//     url: "/articles/unsave/" + thisId,
+//   }).done(function(data) {
+//   });
+// });
 
 // Save NEW note btn //
 // url path
