@@ -32,7 +32,6 @@ $(".scrape-new").on("click", function() {
     console.log(data)
   })
   setTimeout(reloadPage, 1000)
-  // setTimeout(clearArt, 1001)
   console.log("clear all")
 });
 
@@ -41,19 +40,19 @@ $(".save-articles").on("click", function() {
   console.log("saved articles button clicks")
   var thisId = $(this).attr("data-id");
   $.ajax({
-    method: "POST",
-    url: "/saved",
+    method: "PUT",
+    url: "/saved/" + thisId,
   }).done(function(data) {
   });
 });
 
 // Open saved articles btn ---> Directs to Saved Articles Page //
-$(".open").on("click", function() {
-  $.get("/saved", function (req, res) {
-    console.log(res);
-  }).then(function(data) {
-  });
-});
+// $(".open").on("click", function() {
+//   $.get("/saved", function (req, res) {
+//     console.log(res);
+//   }).then(function(data) {
+//   });
+// });
 
 // Delete articles btn //
 // url path

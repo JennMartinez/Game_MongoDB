@@ -1,5 +1,5 @@
 <div class="color">
-  <nav class="navbar navbar-transparent">
+  <nav class="navbar">
     <a class="navbar-brand" style="color:rgb(56, 240, 0)" href="/">Game Scraper</a>
     <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01"
       aria-expanded="false" aria-label="Toggle navigation">
@@ -47,9 +47,9 @@
 
 <div class="container-fluid article-container">
   {{#each articles}}
-  <a href="https://www.gamespot.com/news/" target="_blank">{{this.title}}</a> 
+  <a href="https://www.gamespot.com{{this.link}}" target="_blank">{{this.title}}</a> 
   <p>{{this.summary}}</p>
-  <a class="btn btn-success save-articles" {{this.save-articles}}>Save Article</a>
+  <a class="btn btn-success save-articles" data-id="{{this._id}}">Save Article</a>
   {{!-- <p>{{this.save-articles}}</p> --}}
   <hr>
   {{/each}}

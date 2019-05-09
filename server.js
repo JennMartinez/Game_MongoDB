@@ -10,7 +10,7 @@ var cheerio = require("cheerio");
 var db = require("./models");
 
 // PORT 3000 //
-var PORT = process.env.PORT || 8080;
+var PORT = process.env.PORT || 3030;
 
 // MongoDB connection //
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
@@ -100,13 +100,13 @@ app.get("/scrape", function(req, res) {
 // Navigates to saved //
 app.get("/saved", function(req, res) {
   db.Article.find ({
-      saved: false
+      saved: true
     })
     .then(function(dbArticle) {
         var hbsobject = {
             articles: dbArticle
         };
-        res.render(dbArticle);
+        // res.render(dbArticle);
         res.render("saved", hbsobject);
 
     })
@@ -115,14 +115,15 @@ app.get("/saved", function(req, res) {
     });
 });
 
-// Route to save an article  **// 
+// Route to save an article  // 
 app.put("/saved/:id", function(req, res) {
   db.Article.findByIdAndUpdate({ _id: req.params.id }, 
     { saved : true })
     .then(function(dbArticle) {
-      res.json(dbArticle);
+      res.status(201).end();
     })
     .catch(function(err) {
+      console.log(err);
       res.json(err);
     });
 });
